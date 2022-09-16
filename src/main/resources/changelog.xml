@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-1">
+        <createTable tableName="developer_Skill">
+            <column name="developer_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="skill_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-2">
+        <createTable tableName="developers">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_Name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_Name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-3">
+        <createTable tableName="skills">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-4">
+        <createTable tableName="specialties">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-5">
+        <createIndex indexName="d_ID" tableName="developer_Skill">
+            <column name="developer_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-6">
+        <createIndex indexName="s_ID" tableName="developer_Skill">
+            <column name="skill_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-7">
+        <createIndex indexName="spec_idx" tableName="developers">
+            <column name="specialty"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-8">
+        <addForeignKeyConstraint baseColumnNames="developer_ID" baseTableName="developer_Skill" constraintName="d_ID" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="developers"/>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-9">
+        <addForeignKeyConstraint baseColumnNames="skill_ID" baseTableName="developer_Skill" constraintName="s_ID" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="skills"/>
+    </changeSet>
+    <changeSet author="niqitagrigorivich (generated)" id="1663329724508-10">
+        <addForeignKeyConstraint baseColumnNames="specialty" baseTableName="developers" constraintName="spec" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="specialties"/>
+    </changeSet>
+</databaseChangeLog>
