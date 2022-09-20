@@ -22,7 +22,7 @@ public class JDBCSpecialtyRepository implements SpecialtyRepository {
                 .createPreparedStatement(String.format(SQLQuery.GET_ALL, TABLE_NAME))) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int specialtyID = resultSet.getInt("id");
+                int specialtyID = resultSet.getInt("specialty_id");
                 String specialtyName = resultSet.getString("name");
                 specialties.add(new Specialty(specialtyID, specialtyName));
             }
@@ -35,7 +35,7 @@ public class JDBCSpecialtyRepository implements SpecialtyRepository {
     @Override
     public Specialty getById(Integer integer) {
         try (PreparedStatement preparedStatement = DatabaseStatement
-                .createPreparedStatement(String.format(SQLQuery.GET_BY_ID, TABLE_NAME))) {
+                .createPreparedStatement(String.format(SQLQuery.GET_SPECIALTY_BY_ID, TABLE_NAME))) {
             preparedStatement.setInt(1, integer);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

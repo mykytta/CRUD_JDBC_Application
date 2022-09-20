@@ -67,7 +67,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository {
     public Developer getById(Integer integer) {
         Developer developer = new Developer();
         try (PreparedStatement preparedStatement = DatabaseStatement
-                .createPreparedStatement(String.format(SQLQuery.GET_DEVELOPER_BY_ID, TABLE_NAME))) {
+                .createDeveloperPreparedStatement(String.format(SQLQuery.GET_DEVELOPER_BY_ID, TABLE_NAME))) {
             preparedStatement.setInt(1, integer);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -76,25 +76,19 @@ public class JDBCDeveloperRepository implements DeveloperRepository {
                 developer.setId(resultSet.getInt("id"));
                 developer.setFirstName(resultSet.getString("first_Name"));
                 developer.setLastName(resultSet.getString("last_Name"));
-                developer.setSpecialty(new JDBCSpecialtyRepository().getById(resultSet.getInt("specialty")));
+                developer.setSpecialty(new Specialty(resultSet.getInt("specialty_id"), resultSet.getString("name")));
                 developer.setStatus(Status.valueOf(resultSet.getString("status")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try (PreparedStatement preparedStatement = DatabaseStatement
-                .createPreparedStatement(String.format(SQLQuery.GET_ALL, "developer_Skill"))) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int developerID = resultSet.getInt("developer_ID");
-                int skillID = resultSet.getInt("skill_ID");
-                if(developer.getId() == developerID) {
-                    if (developer.getSkills() != null) {
-                        developer.getSkills().add(skillRepository.getById(skillID));
-                    } else {
-                        developer.setSkills(new ArrayList<>());
-                        developer.getSkills().add(skillRepository.getById(skillID));
+                resultSet.beforeFirst();
+                while (resultSet.next()) {
+                    int developerID = resultSet.getInt("developer_ID");
+                    int skillID = resultSet.getInt("skill_ID");
+                    if (developer.getId() == developerID) {
+                        if (developer.getSkills() != null) {
+                            developer.getSkills().add(skillRepository.getById(skillID));
+                        } else {
+                            developer.setSkills(new ArrayList<>());
+                            developer.getSkills().add(skillRepository.getById(skillID));
+                        }
                     }
                 }
             }
